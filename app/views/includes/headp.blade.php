@@ -36,6 +36,8 @@
 
     {{ HTML::style('css/buttons.dataTables.min.css') }}
 
+    {{ HTML::style("https://fonts.googleapis.com/css?family=Roboto:300") }}
+
     <style type="text/css">
 
    .right-inner-addon {

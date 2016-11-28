@@ -1,12 +1,26 @@
+<style type="text/css" media="screen">
+    .navbar-static-top{
+        position: fixed;
+        width: 100%;
+        background: #DD4F4F;
+        border: none;
+        outline: none;
+        //box-shadow: 0px 1px 3px rgba(0,0,0,0.3);
+    }  
+    .lg  {
+        position: relative;
+        top:40%;
+        transform:translateY(-30%); 
+    }
+    
+
+</style>
 
 <body>
 
-
-    
-
     <div id="wrapper">
 
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 50px">
             <div class="navbar-header"  >
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -15,9 +29,9 @@
                     <span class="icon-bar"></span>
                 </button>
 
-               
+               <?php $organization = Organization::find(1);?>
 
-                <a class="navbar-brand"  href="{{ URL::to('/')}}" > </a>
+                <a class="navbar-brand lg"  href="{{ URL::to('/')}}" ><img src="{{ asset('public/uploads/logos/'.$organization->logo) }}" alt="LOGO" width="10%"/>&emsp;<font color='white'><b>{{Organization::getOrganizationName()}}</b></font></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -33,7 +47,7 @@
             @if(Confide::user()->hasRole('SUPERADMIN') || Confide::user()->hasRole('ACCOUNTS MANAGER') ||  Confide::user()->hasRole('HR OPERATIONS AND OFFICE MANAGEMENT'))
                 <li  >
                     <a  href="{{ URL::to('dashboard')}}">
-                        <i class="fa fa-home fa-fw"></i>  {{{ Lang::get('messages.nav.dashboard') }}}
+                        <i class="fa fa-home fa-fw"></i>  {{{ Lang::get('messages.nav.home') }}}
                     </a>
                     
                 </li>
@@ -83,7 +97,7 @@
             
                  <li  >
                     <a  href="{{ URL::to('accounts')}}">
-                        <i class="fa fa-file fa-fw"></i>  {{{ Lang::get('messages.nav.accounting') }}} 
+                        <i class="fa fa-calculator fa-fw"></i>  {{{ Lang::get('messages.nav.accounting') }}} 
                     </a>
                     
                 </li>
@@ -131,7 +145,7 @@
 
                 <!-- /.dropdown -->
                
-                <li class="dropdown" style="background-color:white;">
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  {{ Confide::user()->username}} <i class="fa fa-caret-down"></i>
                     </a>

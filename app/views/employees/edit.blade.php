@@ -246,7 +246,7 @@ $(document).ready(function() {
 
                     <div class="form-group">
                         <label for="username">Signature</label><br>
-                        <div id="signPreview"><img src="{{{ $employee->signature }}}" alt=""></div>
+                        <div id="signPreview"></div>
                         <input class="img" placeholder="" type="file" name="signature" id="signFile" value="{{{ $employee->signature }}}">
                     </div>
 

@@ -70,9 +70,9 @@ class LeaveapplicationsController extends \BaseController {
 
 		if(Confide::user()->user_type == 'member'){
 
-			return Redirect::to('css/leave');
+			return Redirect::to('css/leave')->with('notice', 'Leave Created! Please wait for your supervisor to approve');
 		} else {
-			return Redirect::to('leavemgmt');
+			return Redirect::to('leavemgmt')->with('notice', 'Leave Created! Please wait for the employee supervisor to approve');
 		}
 		
 	}
@@ -211,7 +211,7 @@ class LeaveapplicationsController extends \BaseController {
 
 	    $leaveapplication = Leaveapplication::findOrFail($id);
 
-	    $leaveapplication->is_supervisor_approved = 0;
+	    $leaveapplication->is_supervisor_approved = 2;
 
 	    $leaveapplication->update();
 

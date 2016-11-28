@@ -35,6 +35,17 @@
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
+                  
+                  <li><a href="#"><i class="fa fa-th-large fa-fw"></i>Orders<i class="fa fa-caret-down fa-fw"></i></a>
+                    <ul class="nav">
+                      <li><a href="{{ URL::to('salesorders') }}"><i class="fa fa-list fa-fw"></i>Sales Orders</a></li>
+                      <li><a href="{{ URL::to('purchaseorders') }}"><i class="fa fa-list fa-fw"></i>Purchase Orders</a></li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <a href="{{ URL::to('quotationorders') }}"><i class="fa fa-list fa-fw"></i>Quotation</a>
+                  </li>
 
                   
                   <li>

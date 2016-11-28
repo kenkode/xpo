@@ -33,6 +33,7 @@ return array(
 
 
 	'nav' => array(
+		'home' => 'Home',
 		'dashboard' => 'Dashboard',
 		'members' => 'Members',
 		'accounting' => 'Accounting',

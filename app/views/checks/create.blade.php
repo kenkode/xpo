@@ -41,15 +41,21 @@
             
         </div>
 
+       
+
         <div class="form-group">
             <label for="username">Date Out <span style="color:red">*</span> :</label>
-            <input class="form-control datepicker21" placeholder="" type="text" name="date_out" id="date_out" value="{{{ Input::old('date_out') }}}" required>
+            <div class="right-inner-addon ">
+            <i class="glyphicon glyphicon-calendar"></i>
+            <input class="form-control datepicker21" placeholder="" readonly="readonly" type="text" name="date_out" id="date_out" value="{{{ Input::old('date_out') }}}" required>
         </div>
 
 
           <div class="form-group">
-            <label for="username">Date Expected Back :</label>
-            <input class="form-control datepicker21" placeholder="" type="text" name="expected_date_back" id="expected_date_back" value="{{{ Input::old('expected_date_back') }}}" required>
+            <label for="username">Date Expected Back <span style="color:red">*</span> :</label>
+             <div class="right-inner-addon ">
+             <i class="glyphicon glyphicon-calendar"></i>
+            <input class="form-control datepicker21" placeholder="" readonly="readonly" type="text" name="expected_date_back" id="expected_date_back" value="{{{ Input::old('expected_date_back') }}}" required>
         </div>
 
 

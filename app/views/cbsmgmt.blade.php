@@ -1,8 +1,6 @@
 @extends('layouts.main')
 @section('content')
 
-<br><br>
-		
 										<div class="row">
 											<div class="col-md-2">
 												<a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('members')}}">

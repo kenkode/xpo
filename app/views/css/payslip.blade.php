@@ -29,7 +29,7 @@
             <div class="alert alert-info">{{ Session::get('notice') }}</div>
         @endif
 
-		 <form method="POST" action="{{URL::to('payrollReports/payslip')}}" accept-charset="UTF-8">
+		 <form method="POST" action="{{URL::to('payrollReports/payslip')}}" accept-charset="UTF-8" target="blank">
    
     <fieldset>
 

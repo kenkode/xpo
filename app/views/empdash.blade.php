@@ -1,40 +1,33 @@
 @extends('layouts.membercss')
 @section('content')
 
-
-
-
-
-<br><br>
-
 @if (Session::get('notice'))
-            <div class="alert alert-info">{{ Session::get('notice') }}</div>
-        @endif
+  <div class="alert alert-info">{{ Session::get('notice') }}</div>
+@endif
     
-                    <div class="row">
-                      
-                        <div>
-                          <h2>{{$employee->first_name.' '.$employee->middle_name.' '.$employee->last_name}}</h2>
-                        </div>
-                      
-                    </div>
-                  
+  <div class="row">
+    
+      <div class="col-lg-12">
+        <h2>{{$employee->first_name.' '.$employee->middle_name.' '.$employee->last_name}}</h2>
+      </div>
+    
+  </div>
 
+  <div class="row">
+    
+    <div class="col-lg-12">
+      <hr>
+
+    </div>
+  </div>
 
 
 <div class="row">
   
   <div class="col-lg-12">
-    <hr>
-
+    <a href="{{URL::to('empedit/'.$employee->id)}}" class="btn btn-info">Update Details</a>
+    <br><br>
   </div>
-</div>
-
-
-<div class="row">
-  
-<a href="{{URL::to('empedit/'.$employee->id)}}" class="btn btn-info">Update Details</a>
-<br><br>
 
   <div class="col-lg-4">
 

@@ -34,7 +34,9 @@
 
         <div class="form-group">
             <label for="username">Date In <span style="color:red">*</span> :</label>
-            <input class="form-control datepicker" placeholder="" type="text" name="date_in" id="date_in" value="" required>
+            <div class="right-inner-addon ">
+            <i class="glyphicon glyphicon-calendar"></i>
+            <input class="form-control datepicker21" readonly="readonly" placeholder="" type="text" name="date_in" id="date_in" value="" required>
         </div>
 
 

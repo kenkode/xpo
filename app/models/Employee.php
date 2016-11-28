@@ -180,6 +180,14 @@ class Employee extends Eloquent {
 		return $name;
 	}
 
+	public static function getDept($id){
+
+		$employee = Employee::findOrFail($id);
+		$department = Department::findOrFail($employee->department_id);
+
+		return $department->department_name;
+	}
+
 
     public static function getActiveEmployee(){
 

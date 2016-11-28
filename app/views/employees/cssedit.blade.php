@@ -6,6 +6,7 @@
     width: 180px;
     height: 180px;
     background-position: center center;
+    background-image:url("{{asset('/public/uploads/employees/photo/'.$employee->photo) }}");
     background-size: cover;
     -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
     display: inline-block;
@@ -13,6 +14,7 @@
 #signPreview {
     width: 180px;
     height: 180px;
+    background-image:url("{{asset('/public/uploads/employees/signature/'.$employee->signature) }}");
     background-position: center center;
     background-size: cover;
     -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
@@ -103,7 +105,18 @@ $(document).ready(function() {
         </div>
         @endif
 
-    <form method="POST" action="{{{ URL::to('employees/update/'.$employee->id) }}}" accept-charset="UTF-8">
+        <?php
+
+        $supervisor = Supervisor::where('employee_id',$employee->id)->first();
+        $cs = Supervisor::where('employee_id',$employee->id)->count();
+
+        ?>
+
+    <form method="POST" action="{{{ URL::to('employees/update/'.$employee->id) }}}" accept-charset="UTF-8" enctype="multipart/form-data">
+    @if($cs>0)
+    <input class="form-control" placeholder="" readonly="readonly" type="hidden" name="supervisor" id="supervisor" value="{{{ $supervisor->supervisor_id}}}" >
+    @endif
+
 
             <div class="row">
             
@@ -307,7 +320,7 @@ $(document).ready(function() {
                      <br><br><br>
                     <div class="form-group">
                         <label for="username">Signature</label><br>
-                        <div id="signPreview"><img src="{{{ $employee->signature }}}" alt=""></div>
+                        <div id="signPreview"></div>
                         <input class="form-control img" placeholder="" type="file" name="signature" id="signFile" value="{{{ $employee->signature }}}">
                     </div>
 

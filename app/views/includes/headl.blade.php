@@ -38,6 +38,8 @@
 
     {{ HTML::style('css/popup.css') }}
 
+    {{ HTML::style("https://fonts.googleapis.com/css?family=Roboto:300") }}
+
     <style type="text/css">
 
    .right-inner-addon {

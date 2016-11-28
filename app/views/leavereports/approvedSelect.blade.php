@@ -24,7 +24,7 @@
         </div>
         @endif
 
-		 <form method="POST" action="{{URL::to('leaveReports/approvedleaves')}}" accept-charset="UTF-8">
+		 <form method="POST" target="blank" action="{{URL::to('leaveReports/approvedleaves')}}" accept-charset="UTF-8">
    
     <fieldset>
 

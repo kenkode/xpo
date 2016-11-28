@@ -1,7 +1,12 @@
+<style type="text/css">
+.lg  {
+        position: relative;
+        top:40%;
+        transform:translateY(-30%); 
+    }
+</style>
 <body>
 
-
-    
 
     <div id="wrapper">
 
@@ -13,48 +18,21 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <?php 
+                
+                <?php $organization = Organization::find(1);?>
 
-    $organization = DB::table('organizations')->where('id', '=', 1)->pluck('name');
-
-    
-?> 
-                <a class="navbar-brand"  href="{{ URL::to('/')}}" > <?php echo $organization; ?></a>
+                <a class="navbar-brand lg"  href="{{ URL::to('/')}}" ><img src="{{ asset('public/uploads/logos/'.$organization->logo) }}" alt="LOGO" width="10%"/>&emsp;<font color='white'><b>{{$organization->name}}</b></font></a>
             </div>
             <!-- /.navbar-header -->
 
         
 
             <ul class="nav navbar-top-links navbar-right">
-         
-               
-                
-               
-
-                 
-
-               
-               
-
-               
-
-               
-
-                
-                
-
-                
-
-                
-
-
-
-                
 
 
                 <!-- /.dropdown -->
                
-                <li class="dropdown" style="background-color:white;">
+                <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i>  {{ Confide::user()->username}} <i class="fa fa-caret-down"></i>
                     </a>

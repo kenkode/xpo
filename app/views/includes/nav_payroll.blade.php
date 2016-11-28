@@ -35,6 +35,10 @@
                   </li>
 
                   <li>
+                    <a href="{{ URL::to('memberadvances') }}"><i class="fa fa-share-square-o fa-fw"></i> Member Advances</a>
+                  </li>
+
+                  <li>
                     <a href="{{ URL::to('advance') }}"><i class="glyphicon glyphicon-circle-arrow-right fa-fw"></i>  Process Advance Salaries</a>
                   </li>
                         

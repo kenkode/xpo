@@ -229,6 +229,7 @@ Route::get('accounts/create/{id}', 'AccountsController@create');
 
 });
 
+
 /*
 * journals routes
 */
@@ -237,6 +238,58 @@ Route::post('journals/update/{id}', 'JournalsController@update');
 Route::get('journals/delete/{id}', 'JournalsController@destroy');
 Route::get('journals/edit/{id}', 'JournalsController@edit');
 Route::get('journals/show/{id}', 'JournalsController@show');
+
+
+Route::resource('expenses', 'ExpensesController');
+Route::get('expenses/edit/{id}', 'ExpensesController@edit');
+Route::post('expenses/update/{id}', 'ExpensesController@update');
+Route::get('expenses/delete/{id}', 'ExpensesController@destroy');
+Route::get('expenses/pay/{id}', 'ExpensesController@payBillView');
+Route::post('expenses/payBill', 'ExpensesController@payBill');
+
+
+
+/**
+ * Bank Account Routes &
+ * Bank Reconciliation Routes
+ */
+Route::resource('bankAccounts', 'BankAccountController');
+Route::get('bankAccounts/reconcile/{id}', 'BankAccountController@showReconcile');
+Route::post('bankAccounts/uploadStatement', 'BankAccountController@uploadBankStatement');
+Route::post('bankAccount/reconcile', 'BankAccountController@reconcileStatement');
+
+Route::get('bankAccount/reconcile/add/{id}/{id2}/{id3}', 'BankAccountController@addStatementTransaction');
+Route::post('bankAccount/reconcile/add', 'BankAccountController@saveStatementTransaction');
+
+Route::get('bankReconciliation/report', 'ErpReportsController@displayRecOptions');
+Route::post('bankReconciliartion/generateReport', 'ErpReportsController@showRecReport');
+
+
+/* PETTY CASH ROUTES */
+Route::resource('petty_cash', 'PettyCashController');
+Route::post('petty_cash/addMoney', 'PettyCashController@addMoney');
+Route::post('petty_cash/addContribution', 'PettyCashController@addContribution');
+Route::post('petty_cash/newTransaction', 'PettyCashController@newTransaction');
+Route::post('petty_cash/commitTransaction', 'PettyCashController@commitTransaction');
+Route::get('petty_cash/transaction/{id}', 'PettyCashController@receiptTransactions');
+
+// Edit and delete petty cash items
+Route::get('petty_cash/newTransaction/remove/{count}', 'PettyCashController@removeTransactionItem');
+
+
+/* EXPENSE CLAIMS ROUTES */
+Route::resource('expense_claims', 'ExpenseClaimController');
+Route::get('expense_claims/newReceipt', 'ExpenseClaimController@show');
+Route::get('expense_claims/editReceipt/{id}', 'ExpenseClaimController@edit');
+Route::post('expense_claims/newItem', 'ExpenseClaimController@addReceiptItem');
+Route::get('expense_claims/newReceipt/remove/{count}', 'ExpenseClaimController@removeItem');
+Route::post('expense_claims/commitTransaction', 'ExpenseClaimController@commitTransaction');
+Route::post('expense_claims/submitClaim', 'ExpenseClaimController@submitClaim');
+Route::get('expense_claims/approveClaim/{id}', 'ExpenseClaimController@approveClaimView');
+Route::get('expense_claims/approve/{id}', 'ExpenseClaimController@approveClaim');
+Route::get('expense_claims/decline/{id}', 'ExpenseClaimController@declineClaim');
+Route::get('expense_claims/payClaim/{id}', 'ExpenseClaimController@payClaimView');
+Route::post('expense_claims/payClaim', 'ExpenseClaimController@payClaim');
 
 
 
@@ -2616,11 +2669,6 @@ Route::resource('paymentmethods', 'PaymentmethodsController');
 
 
 
-
-Route::resource('expenses', 'ExpensesController');
-
-
-
 Route::resource('payments', 'PaymentsController');
 
 
@@ -2716,6 +2764,20 @@ Route::get('css/payslips', function(){
   return View::make('css.payslip', compact('employee'));
 });
 
+Route::resource('css/advances', 'MemberAdvancesController');
+Route::get('css/advances/edit/{id}', 'MemberAdvancesController@edit');
+Route::post('css/advances/update/{id}', 'MemberAdvancesController@update');
+Route::get('css/advances/delete/{id}', 'MemberAdvancesController@destroy');
+Route::get('css/advances/view/{id}', 'MemberAdvancesController@view');
+Route::get('css/advances/create', 'MemberAdvancesController@create');
+
+Route::resource('memberadvances', 'MemAdvancesController');
+Route::get('memberadvances/approve/{id}', 'MemAdvancesController@approve');
+Route::get('memberadvances/memapprove/{id}', 'MemAdvancesController@memapprove');
+Route::get('memberadvances/reject/{id}', 'MemAdvancesController@reject');
+Route::get('memberadvances/memrej/{id}', 'MemAdvancesController@memrej');
+Route::get('memberadvances/view/{id}', 'MemAdvancesController@view');
+
 
 Route::get('css/leave', function(){
 
@@ -2774,22 +2836,65 @@ Route::get('erpReports', function(){
     return View::make('erpreports.erpReports');
 });
 
-Route::get('erpReports/clients', 'ErpReportsController@clients');
-Route::get('erpReports/items', 'ErpReportsController@items');
-Route::get('erpReports/expenses', 'ErpReportsController@expenses');
+Route::post('erpReports/clients', 'ErpReportsController@clients');
+Route::get('erpReports/selectClientsPeriod', 'ErpReportsController@selectClientsPeriod');
+
+
+
+Route::post('erpReports/items', 'ErpReportsController@items');
+Route::get('erpReports/selectItemsPeriod', 'ErpReportsController@selectItemsPeriod');
+
+Route::post('erpReports/expenses', 'ErpReportsController@expenses');
+Route::get('erpReports/selectExpensesPeriod', 'ErpReportsController@selectExpensesPeriod');
+
+
 Route::get('erpReports/paymentmethods', 'ErpReportsController@paymentmethods');
-Route::get('erpReports/payments', 'ErpReportsController@payments');
+
+Route::post('erpReports/payments', 'ErpReportsController@payments');
+Route::get('erpReports/selectPaymentsPeriod', 'ErpReportsController@selectPaymentsPeriod');
+
+Route::get('erpReports/invoice/{id}', 'ErpReportsController@invoice');
+
+
+Route::post('erpReports/sales', 'ErpReportsController@sales');
+Route::get('erpReports/sales_summary', 'ErpReportsController@sales_Summary');
+Route::get('erpReports/selectSalesPeriod', 'ErpReportsController@selectSalesPeriod');
+
+
+Route::post('erpReports/purchases', 'ErpReportsController@purchases');
+Route::get('erpReports/selectPurchasesPeriod', 'ErpReportsController@selectPurchasesPeriod');
+
+
+
+Route::get('erpReports/quotation/{id}', 'ErpReportsController@quotation');
+Route::get('erpReports/pricelist', 'ErpReportsController@pricelist');
+Route::get('erpReports/receipt/{id}', 'ErpReportsController@receipt');
+Route::get('erpReports/PurchaseOrder/{id}', 'ErpReportsController@PurchaseOrder');
 
 Route::get('erpReports/locations', 'ErpReportsController@locations');
-Route::get('erpReports/stock', 'ErpReportsController@stock');
+
+Route::get('erpReports/stocks', 'ErpReportsController@stock');
+Route::get('erpReports/selectStockPeriod', 'ErpReportsController@selectStockPeriod');
+
+
+Route::get('erpReports/accounts', 'ErpReportsController@accounts');
+
+
+
+Route::resource('taxes', 'TaxController');
+Route::post('taxes/update/{id}', 'TaxController@update');
+Route::get('taxes/delete/{id}', 'TaxController@destroy');
+Route::get('taxes/edit/{id}', 'TaxController@edit');
 
 
 
 
 
+/**
+ * BEGINNING OF ORDERS(SALES & PURCHASES) & QUOTATIONS
+ */
 
 Route::get('salesorders', function(){
-
   $orders = Erporder::all();
   $items = Item::all();
   $locations = Location::all();
@@ -2799,18 +2904,176 @@ Route::get('salesorders', function(){
 
 
 
+Route::get('purchaseorders', function(){
+
+  $purchases = Erporder::all();
+  $items = Item::all();
+  $locations = Location::all();
+
+
+  return View::make('erppurchases.index', compact('items', 'locations', 'purchases'));
+});
+
+
+
+Route::get('quotationorders', function(){
+
+  $quotations = Erporder::all();
+  $items = Item::all();
+  $locations = Location::all();
+  $items = Item::all();
+  $locations = Location::all();
+
+  return View::make('erpquotations.index', compact('items', 'locations', 'quotations'));
+});
+
+
 Route::get('salesorders/create', function(){
 
-  $order_number = rand(100,100000);
+  $count = DB::table('erporders')->count();
+  $order_number = date("Y/m/d/").str_pad($count+1, 4, "0", STR_PAD_LEFT);
+  $items = Item::all();
+  $locations = Location::all();
+  $accounts = Account::all();
+
+  $clients = Client::all();
+
+  return View::make('erporders.create', compact('items', 'locations', 'order_number', 'clients', 'accounts'));
+});
+
+
+Route::get('purchaseorders/create', function(){
+
+  $count = DB::table('erporders')->count();
+  $order_number = date("Y/m/d/").str_pad($count+1, 4, "0", STR_PAD_LEFT);
+  $items = Item::all();
+  $locations = Location::all();
+  $accounts = Account::all();
+
+  $clients = Client::all();
+
+  return View::make('erppurchases.create', compact('items', 'locations', 'order_number', 'clients', 'accounts'));
+});
+
+
+Route::get('quotationorders/create', function(){
+
+  $count = DB::table('erporders')->count();
+  $order_number = date("Y/m/d/").str_pad($count+1, 4, "0", STR_PAD_LEFT);;
   $items = Item::all();
   $locations = Location::all();
 
   $clients = Client::all();
 
-  return View::make('erporders.create', compact('items', 'locations', 'order_number', 'clients'));
+  return View::make('erpquotations.create', compact('items', 'locations', 'order_number', 'clients'));
 });
 
+
+
+
 Route::post('erporders/create', function(){
+
+  $data = Input::all();
+
+  $client = Client::findOrFail(array_get($data, 'client'));
+
+/*
+  $erporder = array(
+    'order_number' => array_get($data, 'order_number'), 
+    'client' => $client,
+    'date' => array_get($data, 'date')
+
+    );
+  */
+
+  Session::put( 'erporder', array(
+      'order_number' => array_get($data, 'order_number'), 
+      'client' => $client,
+      'date' => array_get($data, 'date'),
+      'credit_ac' => array_get($data, 'credit_ac'),
+      'debit_ac' => array_get($data, 'debit_ac'),
+      'transaction_desc' => array_get($data, 'transaction_desc')
+    )
+  );
+  Session::put('orderitems', []);
+
+  $orderitems =Session::get('orderitems');
+
+ /*
+  $erporder = new Erporder;
+
+  $erporder->date = date('Y-m-d', strtotime(array_get($data, 'date')));
+  $erporder->order_number = array_get($data, 'order_number');
+  $erporder->client()->associate($client);
+  $erporder->payment_type = array_get($data, 'payment_type');
+  $erporder->type = 'sales';
+  $erporder->save();
+
+  */
+
+  $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erporders.orderitems', compact('erporder', 'items', 'locations', 'taxes','orderitems'));
+
+});
+
+
+
+Route::post('erppurchases/create', function(){
+
+  $data = Input::all();
+
+  $client = Client::findOrFail(array_get($data, 'client'));
+
+/*
+  $erporder = array(
+    'order_number' => array_get($data, 'order_number'), 
+    'client' => $client,
+    'date' => array_get($data, 'date')
+
+    );
+  */
+
+  Session::put( 'erporder', array(
+      'order_number' => array_get($data, 'order_number'), 
+      'client' => $client,
+      'date' => array_get($data, 'date'),
+      'credit_ac' => array_get($data, 'credit_ac'),
+      'debit_ac' => array_get($data, 'debit_ac'),
+      'transaction_desc' => array_get($data, 'transaction_desc')
+    )
+  );
+  Session::put('purchaseitems', []);
+
+  $orderitems =Session::get('purchaseitems');
+
+ /*
+  $erporder = new Erporder;
+
+  $erporder->date = date('Y-m-d', strtotime(array_get($data, 'date')));
+  $erporder->order_number = array_get($data, 'order_number');
+  $erporder->client()->associate($client);
+  $erporder->payment_type = array_get($data, 'payment_type');
+  $erporder->type = 'sales';
+  $erporder->save();
+
+  */
+
+  $items = Item::where('type', '!=', 'service')->get();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erppurchases.purchaseitems', compact('items', 'locations','taxes','orderitems'));
+
+});
+
+
+
+
+
+Route::post('erpquotations/create', function(){
 
   $data = Input::all();
 
@@ -2832,9 +3095,9 @@ Route::post('erporders/create', function(){
 
     )
     );
-  Session::put('orderitems', []);
+  Session::put('quotationitems', []);
 
-  $orderitems =Session::get('orderitems');
+  $orderitems =Session::get('quotationitems');
 
  /*
   $erporder = new Erporder;
@@ -2850,13 +3113,17 @@ Route::post('erporders/create', function(){
 
   $items = Item::all();
   $locations = Location::all();
+  $taxes = Tax::all();
 
-
-  return View::make('erporders.orderitems', compact('erporder', 'items', 'locations', 'orderitems'));
+  return View::make('erpquotations.quotationitems', compact('items', 'locations','taxes','orderitems'));
 
 });
 
 
+/**
+ * =====================================
+ * ORDERITEMS {SALES ORDER}
+ */
 Route::post('orderitems/create', function(){
 
   $data = Input::all();
@@ -2868,67 +3135,428 @@ Route::post('orderitems/create', function(){
   $quantity = Input::get('quantity');
   $duration = Input::get('duration');
   $item_id = $item->id;
-
-  
+  $location = Input::get('location');
 
    Session::push('orderitems', [
       'itemid' => $item_id,
       'item' => $item_name,
       'price' => $price,
       'quantity' => $quantity,
-      'duration' => $duration
-
+      'duration' => $duration,
+      'location' =>$location
     ]);
+
+
 
   $orderitems = Session::get('orderitems');
 
    $items = Item::all();
   $locations = Location::all();
+  $taxes = Tax::all();
 
-  return View::make('erporders.orderitems', compact('items', 'locations', 'orderitems'));
+  return View::make('erporders.orderitems', compact('items', 'locations', 'taxes','orderitems'));
 
 });
 
 
-Route::get('orderitems/remove/{id}', function($id){
+/**
+ * =================================================================
+ * ORDERITEMS EDITING
+ * Editing order item session
+ */
+Route::get('orderitems/edit/{count}', function($count){
+  $editItem = Session::get('orderitems')[$count];
 
-   
-     $orderitems = Session::get('orderitems');
+  return View::make('erporders.edit', compact('editItem', 'count'));
+});
 
-     foreach ($orderitems as $orderitem) {
-       if($orderitem['itemid'] == $id){
-          //Session::forget($orderitem);
-        
-  //Session::forget('orderitems', $id);
-       }
-     }
+Route::post('orderitems/edit/{count}', function($sesItemID){
+  $quantity = Input::get('qty');
+  $price = (float) Input::get('price');
+  //return $data['qty'].' - '.$data['price'];
+
+  $ses = Session::get('orderitems');
+  //unset($ses);
+  $ses[$sesItemID]['quantity']=$quantity;
+  $ses[$sesItemID]['price']=$price;
+  Session::put('orderitems', $ses);
+
+  $orderitems = Session::get('orderitems');
+  $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erporders.orderitems', compact('items', 'locations', 'taxes','orderitems'));
+  
+});
+
+
+/**
+ * =====================================
+ * Deleting an order item session item
+ */
+Route::get('orderitems/remove/{count}', function($count){
+  $item = Session::get('orderitems');
+  unset($item[$count]);
+  $newItems = array_values($item);
+  Session::put('orderitems', $newItems);
+
+
+  $orderitems = Session::get('orderitems');
+  $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erporders.orderitems', compact('items', 'locations', 'taxes','orderitems'));
+});
 
 
 
+/**
+ * =========================
+ * PURCHASES
+ */
+Route::post('purchaseitems/create', function(){
 
- $orderitems = Session::get('orderitems');
+  $data = Input::all();
 
+  $item = Item::findOrFail(array_get($data, 'item'));
+
+  $item_name = $item->name;
+  $price = $item->purchase_price;
+  $quantity = Input::get('quantity');
+  $duration = Input::get('duration');
+  $item_id = $item->id;
+
+   Session::push('purchaseitems', [
+      'itemid' => $item_id,
+      'item' => $item_name,
+      'price' => $price,
+      'quantity' => $quantity,
+      'duration' => $duration
+    ]);
+
+
+
+  $orderitems = Session::get('purchaseitems');
+
+  $items = Item::where('type', 'product')->get();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erppurchases.purchaseitems', compact('items', 'locations', 'taxes','orderitems'));
+
+});
+
+
+
+/**
+ * ==========================================================================
+ * EDITING PURCHASE ORDER SESSION
+ * Editing a purchase order session item
+ */
+Route::get('purchaseitems/edit/{count}', function($count){
+  $editItem = Session::get('purchaseitems')[$count];
+
+  return View::make('erppurchases.edit', compact('editItem', 'count'));
+});
+
+Route::post('erppurchases/edit/{count}', function($sesItemID){
+  $quantity = Input::get('qty');
+  $price = (float) Input::get('price');
+  //return $data['qty'].' - '.$data['price'];
+
+  $ses = Session::get('purchaseitems');
+  //unset($ses);
+  $ses[$sesItemID]['quantity']=$quantity;
+  $ses[$sesItemID]['price']=$price;
+  Session::put('purchaseitems', $ses);
+
+  $orderitems = Session::get('purchaseitems');
+  $items = Item::where('type', 'product')->get();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erppurchases.purchaseitems', compact('items', 'locations', 'taxes','orderitems'));
+  
+});
+
+
+/**
+ * =========================================================================
+ * Deleting a purchase order session
+ */
+Route::get('purchaseitems/remove/{count}', function($count){
+  $items = Session::get('purchaseitems');
+  unset($items[$count]);
+  $newItems = array_values($items);
+  Session::put('purchaseitems', $newItems);
+
+
+  $orderitems = Session::get('purchaseitems');
+  $items = Item::where('type', 'product')->get();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erppurchases.purchaseitems', compact('items', 'locations', 'taxes','orderitems'));
+});
+
+
+/**
+ * ===================
+ * QUOTATION
+ */
+Route::post('quotationitems/create', function(){
+
+  $data = Input::all();
+
+  $item = Item::findOrFail(array_get($data, 'item'));
+
+  $item_name = $item->name;
+  $price = $item->selling_price;
+  $quantity = Input::get('quantity');
+  $duration = Input::get('duration');
+  $item_id = $item->id;
+
+   Session::push('quotationitems', [
+      'itemid' => $item_id,
+      'item' => $item_name,
+      'price' => $price,
+      'quantity' => $quantity,
+      'duration' => $duration
+    ]);
+
+
+
+  $orderitems = Session::get('quotationitems');
+
+   $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erpquotations.quotationitems', compact('items', 'locations', 'taxes','orderitems'));
+
+});
+
+
+/**
+ * ==============================================================================
+ * EDITING QUOTATION ITEMS VIA SESSION
+ * Deleting a session item
+ */
+Route::get('quotationitems/remove/{count}', function($count){
+  $items = Session::get('quotationitems');
+  unset($items[$count]);
+  $newItems = array_values($items);
+  Session::put('quotationitems', $newItems);
+
+
+  $orderitems = Session::get('quotationitems');
+  $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erpquotations.quotationitems', compact('items', 'locations', 'taxes','orderitems'));
+  //return Session::get('quotationitems')[$count];
+});
+
+
+/**
+ * EDITING A QUOTATION ITEM
+ */
+Route::get('quotationitems/edit/{count}', function($count){
+  $editItem = Session::get('quotationitems')[$count];
+
+  return View::make('erpquotations.sessionedit', compact('editItem', 'count'));
+});
+
+
+Route::post('erpquotations/sessionedit/{count}', function($sesItemID){
+  $quantity = Input::get('qty');
+  $price = (float) Input::get('price');
+
+  $ses = Session::get('quotationitems');
+  
+  $ses[$sesItemID]['quantity']=$quantity;
+  $ses[$sesItemID]['price']=$price;
+  Session::put('quotationitems', $ses);
+
+  $orderitems = Session::get('quotationitems');
+  $items = Item::all();
+  $locations = Location::all();
+  $taxes = Tax::all();
+
+  return View::make('erpquotations.quotationitems', compact('items', 'locations', 'taxes','orderitems'));
+});
+
+/*=================================================================================*/
+
+
+Route::get('purchaseitems/remove/{id}', function($id){
+
+  Session::forget('orderitems', $id);
+
+  $orderitems = Session::get('orderitems');
 
   $items = Item::all();
   $locations = Location::all();
+  $taxes = Tax::all();
 
-  return View::make('erporders.orderitems', compact('items', 'locations', 'orderitems'));
+  return View::make('erporders.orderitems', compact('items', 'locations', 'taxes', 'orderitems'));
 
 });
 
 
+
 Route::resource('stocks', 'StocksController');
+Route::resource('erporders', 'ErporderssController');
 
 
-Route::get('erporder/commit', function(){
+Route::resource('mails', 'MailsController');
+Route::get('mailtest', 'MailsController@test');
+
+
+
+
+Route::post('erporder/commit', function(){
 
   $erporder = Session::get('erporder');
 
   $erporderitems = Session::get('orderitems');
+  
+  $total = Input::all();
 
- // $client = Client::findorfail(array_get($erporder, 'client'));
+  // $client = Client: :findorfail(array_get($erporder, 'client'));
 
-  //print_r($erporder);
+  // print_r($total);
+  
+  // Create a session to hold journal entry data
+  Session::put('sales_journal', [
+    'credit_account' => $erporder['credit_ac'],
+    'debit_account' => $erporder['debit_ac'],
+    'date' => date('Y-m-d', strtotime(array_get($erporder, 'date'))),
+    'amount' => $total['grand'],
+    'description' => $erporder['transaction_desc'],
+    'initiated_by' => Confide::user()->username
+  ]);
+
+  $data = Session::get('sales_journal');
+
+  // Create a new sales order
+  $order = new Erporder;
+  $order->order_number = array_get($erporder, 'order_number');
+  $order->client()->associate(array_get($erporder, 'client'));
+  $order->date = date('Y-m-d', strtotime(array_get($erporder, 'date')));
+  $order->status = 'new';
+  $order->discount_amount = array_get($total, 'discount');
+  $order->type = 'sales';  
+  $order->save();
+
+  // Create a new Journal Entry
+  $jEntry = new Journal;
+  $jEntry->journal_entry($data);
+
+  // Create a new Account Transaction
+  $acTransaction = new AccountTransaction;
+  $acTransaction->createTransaction($data);
+
+  Session::forget('sales_journal');
+
+
+  // Insert data into Erporderitem table
+  foreach($erporderitems as $item){
+
+    $itm = Item::findOrFail($item['itemid']);
+
+    $ord = Erporder::findOrFail($order->id);
+
+
+    
+    $location_id = $item['location'];
+
+     $location = Location::find($location_id);    
+    
+    $date = date('Y-m-d', strtotime(array_get($erporder, 'date')));
+
+    $orderitem = new Erporderitem;
+    $orderitem->erporder()->associate($ord);
+    $orderitem->item()->associate($itm);
+    $orderitem->price = $item['price'];
+    $orderitem->quantity = $item['quantity'];
+    $orderitem->duration = $item['duration'];
+    $orderitem->save();
+
+
+    if($itm->type=='product')
+    {
+
+   Stock::removeStock($itm, $location, $item['quantity'], $date);
+
+   }
+
+  }
+ 
+
+  $tax = Input::get('tax');
+  $rate = Input::get('rate');
+
+
+
+
+
+  for($i=0; $i < count($rate);  $i++){
+
+    $txOrder = new TaxOrder;
+
+    $txOrder->tax_id = $rate[$i];
+    $txOrder->order_number = array_get($erporder, 'order_number');
+    $txOrder->amount = $tax[$i];
+    $txOrder->save();
+    
+  }
+  
+ 
+//Session::flush('orderitems');
+//Session::flush('erporder');  
+ 
+    
+
+return Redirect::to('salesorders')->withFlashMessage('Order Successfully Placed!');
+
+
+
+});
+
+
+
+
+
+
+
+Route::post('erppurchase/commit', function(){
+
+  //$orderitems = Session::get('erppurchase');
+
+  $erporder = Session::get('erporder');
+
+  $orderitems = Session::get('purchaseitems');
+  
+  $total = Input::all();
+  // $client = Client: :findorfail(array_get($erporder, 'client'));
+
+  // print_r($total);
+  
+  // Create a session to hold journal entry data
+  Session::put('purchase_journal', [
+    'credit_account' => $erporder['credit_ac'],
+    'debit_account' => $erporder['debit_ac'],
+    'date' => date('Y-m-d', strtotime(array_get($erporder, 'date'))),
+    'amount' => $total['grand'],
+    'description' => $erporder['transaction_desc'],
+    'initiated_by' => Confide::user()->username
+  ]);
+
+  $data = Session::get('purchase_journal');
 
 
   $order = new Erporder;
@@ -2936,11 +3564,23 @@ Route::get('erporder/commit', function(){
   $order->client()->associate(array_get($erporder, 'client'));
   $order->date = date('Y-m-d', strtotime(array_get($erporder, 'date')));
   $order->status = 'new';
-  $order->type = 'sales';
+  //$order->discount_amount = array_get($total, 'discount');
+  $order->type = 'purchases';
   $order->save();
-  
 
-  foreach($erporderitems as $item){
+  // Create a new Journal Entry
+  $jEntry = new Journal;
+  $jEntry->journal_entry($data);
+
+  // Create a new Account Transaction
+  $acTransaction = new AccountTransaction;
+  $acTransaction->createTransaction($data);
+
+  Session::forget('purchase_journal');
+
+
+  // Insert data into Erporderitem table
+  foreach($orderitems as $item){
 
 
     $itm = Item::findOrFail($item['itemid']);
@@ -2952,17 +3592,88 @@ Route::get('erporder/commit', function(){
     $orderitem->item()->associate($itm);
     $orderitem->price = $item['price'];
     $orderitem->quantity = $item['quantity'];
-    $orderitem->duration = $item['duration'];
+    //s$orderitem->duration = $item['duration'];
     $orderitem->save();
   }
-
-//Session::purge('orderitems');
-//Session::purge('erporder');
-return Redirect::to('salesorders');
+  
+ 
+//Session::flush('orderitems');
+//Session::flush('erporder');
+return Redirect::to('purchaseorders')->withFlashMessage('Order Successfully Placed!');;
 
 
 
 });
+
+
+Route::post('erpquotation/commit', function(){
+
+  $erporder = Session::get('erporder');
+
+  $erporderitems = Session::get('quotationitems');
+  
+  $total = Input::all();
+
+  // $client = Client: :findorfail(array_get($erporder, 'client'));
+
+  // print_r($total);
+
+
+  $order = new Erporder;
+  $order->order_number = array_get($erporder, 'order_number');
+  $order->client()->associate(array_get($erporder, 'client'));
+  $order->date = date('Y-m-d', strtotime(array_get($erporder, 'date')));
+  $order->status = 'new';
+  $order->discount_amount = array_get($total, 'discount');
+  $order->type = 'quotations';  
+  $order->save();
+  
+
+  foreach($erporderitems as $item){
+
+
+    $itm = Item::findOrFail($item['itemid']);
+
+    $ord = Erporder::findOrFail($order->id);
+
+
+    
+    //$location_id = $item['location'];
+
+     //$location = Location::find($location_id);    
+    
+    $date = date('Y-m-d', strtotime(array_get($erporder, 'date')));
+
+    $orderitem = new Erporderitem;
+    $orderitem->erporder()->associate($ord);
+    $orderitem->item()->associate($itm);
+    $orderitem->price = $item['price'];
+    $orderitem->quantity = $item['quantity'];
+    $orderitem->duration = $item['duration'];
+    $orderitem->save();
+  }
+
+  $tax = Input::get('tax');
+  $rate = Input::get('rate');
+
+  for($i=0; $i < count($rate);  $i++){
+
+    $txOrder = new TaxOrder;
+
+    $txOrder->tax_id = $rate[$i];
+    $txOrder->order_number = array_get($erporder, 'order_number');
+    $txOrder->amount = $tax[$i];
+    $txOrder->save();
+    
+  }
+  
+  //Session::flush('orderitems');
+  //Session::flush('erporder');    
+  return Redirect::to('quotationorders');
+
+});
+
+
 
 
 Route::get('erporders/cancel/{id}', function($id){
@@ -2979,6 +3690,67 @@ Route::get('erporders/cancel/{id}', function($id){
 });
 
 
+Route::get('erporders/delivered/{id}', function($id){
+
+  $order = Erporder::findorfail($id);
+
+
+
+  $order->status = 'delivered';
+  $order->update();
+
+  return Redirect::to('salesorders');
+  
+});
+
+
+
+
+Route::get('erppurchases/cancel/{id}', function($id){
+
+  $order = Erporder::findorfail($id);
+
+
+
+  $order->status = 'cancelled';
+  $order->update();
+
+  return Redirect::to('purchaseorders');
+  
+});
+
+
+
+Route::get('erppurchases/delivered/{id}', function($id){
+
+  $order = Erporder::findorfail($id);
+
+  $order->status = 'delivered';
+  $order->update();
+
+  return Redirect::to('purchaseorders');
+  
+});
+
+
+
+
+Route::get('erpquotations/cancel/{id}', function($id){
+
+  $order = Erporder::findorfail($id);
+
+
+
+  $order->status = 'cancelled';
+  $order->update();
+
+  return Redirect::to('quotationorders');
+  
+});
+
+
+
+
 Route::get('erporders/show/{id}', function($id){
 
   $order = Erporder::findorfail($id);
@@ -2987,6 +3759,329 @@ Route::get('erporders/show/{id}', function($id){
   
 });
 
+
+
+Route::get('erppurchases/show/{id}', function($id){
+
+  $order = Erporder::findorfail($id);
+
+  return View::make('erppurchases.show', compact('order'));
+  
+});
+
+
+Route::get('erppurchases/payment/{id}', function($id){
+
+  $payments = Payment::all();
+
+  $purchase = Erporder::findorfail($id);    
+
+  $account = Accounts::all();
+
+  return View::make('erppurchases.payment', compact('payments', 'purchase', 'account'));
+  
+});
+
+
+
+/**
+ * SHOW ERP QUOTATION 'X'
+ */
+Route::get('erpquotations/show/{id}', function($id){
+
+
+  $order = Erporder::findorfail($id);
+
+  return View::make('erpquotations.show', compact('order'));
+  
+});
+
+
+/**
+ * APPROVE QUOTATION 'X'
+ */
+Route::post('/erpquotations/approve', function(){
+  $id = Input::get('order_id');
+  $comment = Input::get('comment');
+
+  $order = Erporder::findorfail($id);
+
+  $order->status = 'APPROVED';
+  if($comment === ''){
+    $order->comment = 'No comment.';
+  } else{
+    $order->comment = $comment;
+  }
+
+  $order->update();
+
+  return Redirect::to('erpquotations/show/'.$id);
+});
+
+
+/**
+ * REJECT QUOTATION 'X'
+ */
+Route::post('/erpquotations/reject', function(){
+  $id = Input::get('order_id');
+  $comment = Input::get('comment');
+
+  $order = Erporder::findorfail($id);
+
+  $order->status = 'REJECTED';
+  if($comment === ''){
+    $order->comment = 'No comment.';
+  } else{
+    $order->comment = $comment;
+  }
+
+  $order->update();
+
+  return Redirect::to('erpquotations/show/'.$id);
+});
+
+
+/**
+ * MAIL ERP QUOTATION TO CLIENT 'X'
+ */
+Route::post('erpquotations/mail', 'ErpReportsController@sendMail_quotation');
+
+
+/**
+ * EDIT QUOTATION 'X'
+ */
+Route::get('erpquotations/edit/{id}', function($id){
+  $order = Erporder::findorfail($id);
+  $items = Item::all();
+  $taxes = Tax::all();
+  $tax_orders = TaxOrder::where('order_number', $order->order_number)->orderBy('tax_id', 'ASC')->get();
+
+  //return $tax_orders;
+  return View::make('erpquotations.editquotation', compact('order', 'items', 'taxes', 'tax_orders'));
+
+});
+
+
+/**
+ * ADD ITEMS TO EXISTING ORDER
+ */
+Route::post('erpquotations/edit/add', function(){
+    $order_id = Input::get('order_id');
+    $item_id = Input::get('item_id');
+    $quantity = Input::get('quantity');
+    
+    $item = Item::findorfail($item_id);
+    $item_price = $item->selling_price;
+
+    $itemId = Erporderitem::where('erporder_id', $order_id)->where('item_id', $item_id)->get();
+    
+    if(count($itemId) > 0){
+        return Redirect::back()->with('error', "Item already exists! You can edit the existing item.");
+    } else{
+        $order_item = new Erporderitem;
+        
+        $order_item->item_id = $item_id;
+        $order_item->quantity = $quantity;
+        $order_item->erporder_id = $order_id;   
+        $order_item->price = $item_price;
+        $order_item->save();
+
+        return Redirect::back(); 
+    }
+});
+
+
+/**
+ * COMMIT CHANGES
+ */
+Route::post('erpquotations/edit/{id}', function($id){
+    $order = Erporder::findOrFail($id);
+
+    foreach($order->erporderitems as $orderitem){
+        $val = Input::get('newQty'.$orderitem->item_id);
+        $price = Input::get('newPrice'.$orderitem->item_id);
+        
+        $orderitem->price = $price;
+        $orderitem->quantity = $val;
+        $orderitem->save();
+    }  
+
+    $discount = Input::get('discount');
+    $order->discount_amount = $discount;
+
+    $tax = Input::get('tax');
+    $rate = Input::get('rate');
+
+    for($i=0; $i < count($rate);  $i++){
+        if(count(TaxOrder::getAmount($rate[$i],$order->order_number)) > 0){
+            $txOrder = TaxOrder::findOrfail($rate[$i]);
+            $txOrder->amount = $tax[$i];
+            $txOrder->update();
+        } else{
+            $txOrder = new TaxOrder;
+            $txOrder->tax_id = $rate[$i];
+            $txOrder->order_number = array_get($order, 'order_number');
+            $txOrder->amount = $tax[$i];
+            $txOrder->save();
+        }
+    }
+
+    $order->status = 'EDITED';
+    $order->update();
+    return View::make('erpquotations.show', compact('order'));
+});
+
+
+
+/**
+ * ==========================================================================================
+ * EDITING QUOTATION ITEM FROM DB
+ */
+/*Route::get('erpquotations/edit/{id}', function($id){
+  //$order = Erporder::findorfail($id);
+
+  $quote = DB::table('erporderitems')
+              ->join('erporders', 'erporders.id', '=', 'erporderitems.erporder_id')
+              ->join('items', 'items.id', '=', 'erporderitems.item_id')
+              ->select('erporders.id as erporders_id', 'erporders.client_id', 'erporders.type', 
+                      'erporderitems.id as erporderitems_id', 'item_id', 'quantity', 'price', 
+                      'erporderitems.erporder_id as quote_id',
+                      'items.id as items_id', 'name')
+              ->where('erporderitems.id', '=', $id)
+              ->first();
+
+            //return var_dump($quote);
+
+  return View::make('erpquotations.edit', compact('quote'));
+
+});
+
+
+Route::post('erpquotations/edit', function(){
+  $quote_id = Input::get('quote_id');
+  $id = Input::get('quote_item_id');
+  $qty = Input::get('qty');
+  $price = Input::get('price');
+
+  //return $id.' - '.$qty.' - '.$price.' - '.$quote_id;
+
+  DB::table('erporderitems')
+        ->where('id', $id)
+        ->update(array('quantity'=>$qty, 'price'=>$price));
+
+  return Redirect::to('erpquotations/show/'.$quote_id);
+
+});
+
+
+/*= ADD ITEMS TO QUOTATION =*/
+
+
+/*= DELETE QUOTE ITEM =*/
+Route::get('erpquotations/delete/{quote_id}/{id}', function($quote_id, $id){
+  
+  DB::table('erporderitems')
+        ->where('id', $id)
+        ->delete();
+  DB::update('ALTER TABLE `erporderitems` AUTO_INCREMENT=1');
+
+  return Redirect::to('erpquotations/edit/'.$quote_id);
+});
+
+
+/*========================================================================*/
+
+
+Route::get('api/getrate', function(){
+    $id = Input::get('option');
+    $tax = Tax::find($id);
+    return $tax->rate;
+});
+
+Route::get('api/getmax', function(){
+    $id = Input::get('option');
+    $item  = Item::find($id);
+    if($item->type == 'product'){
+    $stock_in = DB::table('stocks')
+         ->join('items', 'stocks.item_id', '=', 'items.id')
+         ->where('item_id',$id)
+         ->sum('quantity_in');
+
+    $stock_out = DB::table('stocks')
+         ->join('items', 'stocks.item_id', '=', 'items.id')
+         ->where('item_id',$id)
+         ->sum('quantity_out');
+    return $stock_in-$stock_out;
+  }
+});
+
+
+Route::get('api/total', function(){
+    $id = Input::get('option');
+    
+    $client = Client::find($id);
+    $order = 0;
+    
+
+          if($client->type == 'Customer'){
+             $order = DB::table('erporders')
+               ->join('erporderitems','erporders.id','=','erporderitems.erporder_id')
+               ->join('clients','erporders.client_id','=','clients.id')
+               ->where('clients.id',$id)
+               ->where('erporders.type', '!=', 'quotations')
+               ->where('erporders.status', '!=', 'cancelled') ->selectRaw('SUM((price * quantity)) as total')
+               ->pluck('total');
+               //->where('status', '<>', 'cancelled')
+
+             $tax = DB::table('erporders')
+               ->join('clients','erporders.client_id','=','clients.id')
+               ->join('tax_orders','erporders.order_number','=','tax_orders.order_number')
+               ->where('clients.id',$id)
+               ->where('erporders.type', '!=', 'quotations')
+               ->where('erporders.status', '!=', 'cancelled') ->selectRaw('SUM(COALESCE(amount,0))as total')
+               ->pluck('total');
+
+             $order = $order + $tax;
+          }
+          else{
+             $order = DB::table('erporders')
+               ->join('erporderitems','erporders.id','=','erporderitems.erporder_id')
+               ->join('clients','erporders.client_id','=','clients.id')           
+               ->where('clients.id',$id)
+               ->where('erporders.status', '!=', 'cancelled') ->selectRaw('SUM((price * quantity))as total')
+               ->pluck('total');
+          }
+
+    $paid = DB::table('clients')
+           ->join('payments','clients.id','=','payments.client_id')
+           ->where('clients.id',$id) ->selectRaw('COALESCE(SUM(amount_paid),0) as due')
+           ->pluck('due');
+    
+    return number_format($order-$paid, 2);
+});
+
+Route::resource('mails', 'MailsController');
+Route::get('mailtest', 'MailsController@test');
+
+
+Route::get('seedmail', function(){
+
+  $mail = new Mailsender;
+
+  $mail->driver = 'smtp';
+  $mail->save();
+});
+
+Route::get('mail', function(){
+  $mail = Mailsender::find(1);  
+  return View::make('system.mail', compact('mail'));
+
+});
+
+
+/**
+ * ==== END OF ORDERS(SALES & PURCHASES) & QUOTATIONS ====
+ */
 
 
 Route::get('salesinvoice/{id}', function($id){

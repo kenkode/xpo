@@ -66,9 +66,11 @@ class Leaveapplication extends \Eloquent {
 
         $supervisor = Supervisor::where('employee_id',$application->employee_id)->first();
 
-        $employee = Employee::where('id',$supervisor->employee_id)->first();
+        $employee = Employee::where('id',$supervisor->supervisor_id)->first();
 
-		$name = $employee->first_name.' '.$employee->middle_name.' '.$employee->last_name;
+        $emp = Employee::where('id',$supervisor->employee_id)->first();
+
+		$name = $emp->first_name.' '.$emp->middle_name.' '.$emp->last_name;
 
 
 		Mail::send( 'emails.leavecreate', array('application'=>$application, 'name'=>$name), function( $message ) use ($employee)

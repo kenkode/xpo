@@ -33,6 +33,7 @@ return array(
 
 
 	'nav' => array(
+		'home' => 'Nyumbani',
 		'dashboard' => 'Dashibodi',
 		'members' => 'Wanachama',
 		'accounting' => 'Uhasibu',

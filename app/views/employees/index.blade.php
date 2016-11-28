@@ -1,43 +1,68 @@
 @extends('layouts.main')
 @section('content')
 
+<style type="text/css" media="screen">
+  .quicklink{
+    text-align: center;
+  }
+
+  .quicklink div{
+      font-weight: 400;
+  }
+
+  .quicklink a{
+      width: 100%;
+      padding: 15px 5px;
+      color: #FFF;
+      transition: all linear 0.25s;
+  }
+
+  .quicklink a:hover{
+      color: #FFF;
+      transform: translateY(-5px);
+      box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+      filter: brightness(90%);
+  }
+
+</style>
+
 <br><br>
     
-                    <div class="row">
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('employees')}}">
-                          <i class="fa fa-users fa-2x"></i>
-                          <div>Manage Employess</div>
-                          
-                        </a>
-                      </div>
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{URL::to('')}}">
-                          <i class="glyphicon glyphicon-user fa-2x"></i>
-                          <div>Manage Leaves</div>
-                          
-                        </a>
-                      </div>
+    <div class="row">
+      <div class="col-md-2 quicklink">
+        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('employees')}}" style="background: #3498DB">
+          <i class="fa fa-users fa-2x"></i>
+          <div>Manage Employess</div>
+          
+        </a>
+      </div>
+      <div class="col-md-2 quicklink">
+        <a class="btn btn-default btn-icon input-block-level" href="{{URL::to('')}}" style="background: #2ECC71">
+          <i class="fa fa-user fa-2x"></i>
+          <div>Manage Leaves</div>
+          
+        </a>
+      </div>
 
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('')}}">
-                          <i class="glyphicon glyphicon-credit-card fa-2x"></i>
-                          <div>Manage Earnings</div>
-                          
-                        </a>
-                      </div>
-                      
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('')}}">
-                          <i class="glyphicon glyphicon-barcode fa-2x"></i>
-                          <div>Manage Deductions</div>
-                          
-                        </a>
-                      </div>
+      <div class="col-md-2 quicklink">
+        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('')}}" style="background: #9B59B6">
+          <i class="fa fa-credit-card fa-2x"></i>
+          <div>Manage Earnings</div>
+          
+        </a>
+      </div>
+      
+      <div class="col-md-2 quicklink">
+        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('')}}" style="background: #F39C12">
+          <i class="fa fa-barcode fa-2x"></i>
+          <div>Manage Deductions</div>
+          
+        </a>
+      </div>
 
-                      
-                    </div>
-                  
+      
+    </div>
+  
 
 
 

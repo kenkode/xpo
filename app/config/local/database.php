@@ -25,7 +25,7 @@ return array(
 			'host'      => 'localhost',
 			'database'  => 'xpoz',
 			'username'  => 'root',
-			'password'  => '',
+			'password'  => 'mwaste7',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix'    => '',

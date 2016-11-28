@@ -1,60 +1,81 @@
 @extends('layouts.main')
 @section('content')
 
+<style type="text/css" media="screen">
+  .quicklink{
+      text-align: center;
+  }
 
+  .quicklink div{
+      font-weight: 400;
+  }
 
+  .quicklink a{
+      width: 100%;
+      padding: 15px 5px;
+      color: #FFF;
+      transition: all linear 0.25s;
+  }
 
+  .quicklink a:hover{
+      color: #FFF;
+      transform: translateY(-5px);
+      box-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+      filter: brightness(90%);
+  }
+
+</style>
 
 <br><br>
 
 @if (Session::get('notice'))
-            <div class="alert alert-info">{{ Session::get('notice') }}</div>
+      <div class="alert alert-info">{{ Session::get('notice') }}</div>
         @endif
     
-                    <div class="row">
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('employees')}}">
-                          <i class="fa fa-users fa-2x"></i>
-                          <div>Manage Employees</div>
-                          
-                        </a>
-                      </div>
+        <div class="row">
+          <div class="col-md-2 quicklink">
+            <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('employees')}}" style="background: #3498DB">
+              <i class="fa fa-users fa-2x"></i>
+              <div>Manage Employees</div>
+              
+            </a>
+          </div>
 
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('payrollmgmt')}}">
-                          <i class="glyphicon glyphicon-credit-card fa-2x"></i>
-                          <div>Manage Payroll</div>
-                          
-                        </a>
-                      </div>
+          <div class="col-md-2 quicklink">
+            <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('payrollmgmt')}}" style="background: #2ECC71">
+              <i class="fa fa-credit-card fa-2x"></i>
+              <div>Manage Payroll</div>
+              
+            </a>
+          </div>
 
 
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{URL::to('leavemgmt')}}">
-                          <i class="glyphicon glyphicon-tasks fa-2x"></i>
-                          <div>Manage Leaves</div>
-                          
-                        </a>
-                      </div>
+          <div class="col-md-2 quicklink">
+            <a class="btn btn-default btn-icon input-block-level" href="{{URL::to('leavemgmt')}}" style="background: #9B59B6">
+              <i class="fa fa-tasks fa-2x"></i>
+              <div>Manage Leave</div>
+              
+            </a>
+          </div>
 
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('accounts')}}">
-                          <i class="glyphicon glyphicon-list fa-2x"></i>
-                          <div>Manage Accounting</div>
-                          
-                        </a>
-                      </div>
-                      
-                      <div class="col-md-2">
-                        <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('payrollReports')}}">
-                          <i class="glyphicon glyphicon-file fa-2x"></i>
-                          <div>Manage Reports</div>
-                          
-                        </a>
-                      </div>
+          <div class="col-md-2 quicklink">
+            <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('accounts')}}" style="background: #F39C12">
+              <i class="fa fa-list fa-2x"></i>
+              <div>Manage Accounting</div>
+              
+            </a>
+          </div>
+          
+          <div class="col-md-2 quicklink">
+            <a class="btn btn-default btn-icon input-block-level" href="{{ URL::to('payrollReports')}}" style="background: #34495E">
+              <i class="fa fa-file fa-2x"></i>
+              <div>Manage Reports</div>
+              
+            </a>
+          </div>
 
-                      
-                    </div>
+          
+        </div>
                   
 
 

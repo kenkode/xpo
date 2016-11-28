@@ -7454,6 +7454,7 @@ class ReportsController extends \BaseController {
         $apps = DB::table('leaveapplications')
                     ->join('employee', 'leaveapplications.employee_id', '=', 'employee.id')
                     ->join('leavetypes', 'leaveapplications.leavetype_id', '=', 'leavetypes.id')
+                    ->where('is_supervisor_approved', '=', 1)
                     ->whereBetween('application_date', array($start, $end))->get();
 
 

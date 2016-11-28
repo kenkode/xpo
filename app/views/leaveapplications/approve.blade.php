@@ -68,7 +68,7 @@
                         <label for="username">Approved Start Date <span style="color:red">*</span></label>
                         <div class="right-inner-addon ">
                         <i class="glyphicon glyphicon-calendar"></i>
-                        <input required class="form-control datepicker21"  placeholder="" type="text" name="approved_start_date" id="approved_start_date" value="{{$leaveapplication->applied_start_date}}">
+                        <input required readonly="readonly" class="form-control datepicker21"  placeholder="" type="text" name="approved_start_date" id="approved_start_date" value="{{$leaveapplication->applied_start_date}}">
                     </div>
        </div>
 
@@ -78,7 +78,7 @@
                         <label for="username">Approved End Date <span style="color:red">*</span></label>
                         <div class="right-inner-addon ">
                         <i class="glyphicon glyphicon-calendar"></i>
-                        <input required class="form-control datepicker21"  placeholder="" type="text" name="approved_end_date" id="approved_end_date" value="{{$leaveapplication->applied_end_date}}">
+                        <input required readonly="readonly" class="form-control datepicker21"  placeholder="" type="text" name="approved_end_date" id="approved_end_date" value="{{$leaveapplication->applied_end_date}}">
                     </div>
        </div>
 

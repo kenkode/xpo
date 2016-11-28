@@ -24,6 +24,9 @@
                         <a href="{{ URL::to('css/subordinateleave') }}"><i class="glyphicon glyphicon-check fa-fw"></i> Approve Leave</a>
                     </li>
 
+                    <li>
+                        <a href="{{ URL::to('css/advances') }}"><i class="fa fa-share-square-o fa-fw"></i> Apply Advance</a>
+                    </li>
                 
                    <li>
                         <a href="{{ URL::to('css/payslips') }}"><i class="fa fa-money fa-fw"></i> Payslips</a>

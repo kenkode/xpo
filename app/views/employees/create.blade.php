@@ -6,6 +6,7 @@
 #imagePreview {
     width: 180px;
     height: 180px;
+    margin-bottom: 15px;
     background-position: center center;
     background-size: cover;
     background-image:url("{{asset('/public/uploads/employees/photo/default_photo.png') }}");
@@ -15,12 +16,14 @@
 #signPreview {
     width: 180px;
     height: 100px;
+    margin-bottom: 15px;
     background-position: center center;
     background-size: cover;
     -webkit-box-shadow: 0 0 1px 1px rgba(0, 0, 0, .3);
     background-image:url("{{asset('/public/uploads/employees/signature/sign_av.jpg') }}");
     display: inline-block;
 }
+
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
