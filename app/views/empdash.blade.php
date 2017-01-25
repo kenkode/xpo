@@ -101,7 +101,7 @@
 
 
 
-  <div class="col-lg-4">
+  <div class="col-lg-5">
 
 
 

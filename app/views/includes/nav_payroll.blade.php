@@ -64,6 +64,9 @@
                     <a href="{{ URL::to('allowances') }}"><i class="glyphicon glyphicon-cog fa-fw"></i>  Payroll Settings</a>
                   </li>
 
+                  <li><a href="{{ URL::to('payrollcalculator') }}"><i class="fa fa-calculator fa-fw"></i>Payroll Calculator</a>
+                            
+
                   <li>
                     <a href="{{ URL::to('email/payslip') }}"><i class="glyphicon glyphicon-envelope fa-fw"></i>  Email Payslips</a>
                   </li>   

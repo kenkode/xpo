@@ -1816,6 +1816,14 @@ Route::get('employee_deductions/view/{id}', 'EmployeeDeductionsController@view')
 * payroll routes
 */
 
+Route::get('payrollcalculator', function(){
+  $currency = Currency::find(1);
+  return View::make('payroll.payroll_calculator',compact('currency'));
+
+});
+Route::post('shownet', 'PayrollController@disp');
+Route::post('showgross', 'PayrollController@dispgross');
+
 
 Route::resource('payroll', 'PayrollController');
 Route::post('deleterow', 'PayrollController@del_exist');
@@ -4428,3 +4436,10 @@ Route::get('api/pay', function(){
     $employee = Employee::find($id);
     return number_format($employee->basic_pay,2);
 });
+
+Route::get('payrollReports/selectYear', function(){
+    $employees = Employee::where('organization_id',Confide::user()->organization_id)->get();
+    return View::make('pdf.p9Select',compact('employees'));
+});
+
+Route::post('payrollReports/p9form', 'ReportsController@p9form');
